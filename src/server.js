@@ -6,7 +6,7 @@ async function start() {
   try {
     await sequelize.authenticate();
     console.log('Database conectado');
-    // Atenção: em produção prefira migrations.
+
     await sequelize.sync();
 
     app.listen(config.port, () => {
