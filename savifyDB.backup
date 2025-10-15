@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict KWRshbyQlSlBLtOCdR6NTBVVGtc8IL5DpXBSSJ25HsxTCMSgh8hVmkr52LOULIf
+\restrict jSw8YdscZtzpFMwj1itMN6jamz5LWLmHAfAfyyG7cXARdPocLeecB6ybSq4hO70
 
 -- Dumped from database version 18.0
 -- Dumped by pg_dump version 18.0
 
--- Started on 2025-10-08 10:13:47
+-- Started on 2025-10-15 11:32:28
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -26,24 +26,29 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 240 (class 1259 OID 16540)
--- Name: administrador; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 240 (class 1259 OID 24760)
+-- Name: admin; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.administrador (
+CREATE TABLE public.admin (
     id integer NOT NULL,
-    usuario_id integer NOT NULL
+    user_id integer NOT NULL,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.administrador OWNER TO postgres;
+ALTER TABLE public.admin OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 16539)
--- Name: administrador_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 239 (class 1259 OID 24759)
+-- Name: admin_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.administrador_id_seq
+CREATE SEQUENCE public.admin_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -52,38 +57,43 @@ CREATE SEQUENCE public.administrador_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.administrador_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.admin_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5152 (class 0 OID 0)
+-- TOC entry 5191 (class 0 OID 0)
 -- Dependencies: 239
--- Name: administrador_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: admin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.administrador_id_seq OWNED BY public.administrador.id;
+ALTER SEQUENCE public.admin_id_seq OWNED BY public.admin.id;
 
 
 --
--- TOC entry 238 (class 1259 OID 16523)
--- Name: alternativa; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 238 (class 1259 OID 24740)
+-- Name: answer_option; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.alternativa (
+CREATE TABLE public.answer_option (
     id integer NOT NULL,
-    pergunta_id integer,
-    texto text NOT NULL,
-    correta boolean DEFAULT false
+    question_id integer,
+    text text NOT NULL,
+    is_correct boolean DEFAULT false,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.alternativa OWNER TO postgres;
+ALTER TABLE public.answer_option OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 16522)
--- Name: alternativa_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 237 (class 1259 OID 24739)
+-- Name: answer_option_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.alternativa_id_seq
+CREATE SEQUENCE public.answer_option_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -92,38 +102,43 @@ CREATE SEQUENCE public.alternativa_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.alternativa_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.answer_option_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5153 (class 0 OID 0)
+-- TOC entry 5192 (class 0 OID 0)
 -- Dependencies: 237
--- Name: alternativa_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: answer_option_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.alternativa_id_seq OWNED BY public.alternativa.id;
+ALTER SEQUENCE public.answer_option_id_seq OWNED BY public.answer_option.id;
 
 
 --
--- TOC entry 228 (class 1259 OID 16451)
--- Name: categoriagasto; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 232 (class 1259 OID 24691)
+-- Name: content; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.categoriagasto (
+CREATE TABLE public.content (
     id integer NOT NULL,
-    nome character varying(100) NOT NULL,
-    descricao text,
-    cor character varying(20)
+    title character varying(150) NOT NULL,
+    description text,
+    module character varying(100),
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.categoriagasto OWNER TO postgres;
+ALTER TABLE public.content OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 16450)
--- Name: categoriagasto_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 231 (class 1259 OID 24690)
+-- Name: content_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.categoriagasto_id_seq
+CREATE SEQUENCE public.content_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -132,80 +147,65 @@ CREATE SEQUENCE public.categoriagasto_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.categoriagasto_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.content_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5154 (class 0 OID 0)
--- Dependencies: 227
--- Name: categoriagasto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.categoriagasto_id_seq OWNED BY public.categoriagasto.id;
-
-
---
--- TOC entry 232 (class 1259 OID 16483)
--- Name: conteudo; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.conteudo (
-    id integer NOT NULL,
-    titulo character varying(150) NOT NULL,
-    descricao text,
-    modulo character varying(100)
-);
-
-
-ALTER TABLE public.conteudo OWNER TO postgres;
-
---
--- TOC entry 231 (class 1259 OID 16482)
--- Name: conteudo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.conteudo_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.conteudo_id_seq OWNER TO postgres;
-
---
--- TOC entry 5155 (class 0 OID 0)
+-- TOC entry 5193 (class 0 OID 0)
 -- Dependencies: 231
--- Name: conteudo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: content_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.conteudo_id_seq OWNED BY public.conteudo.id;
+ALTER SEQUENCE public.content_id_seq OWNED BY public.content.id;
 
 
 --
--- TOC entry 230 (class 1259 OID 16462)
--- Name: gasto; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 230 (class 1259 OID 24667)
+-- Name: expense; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.gasto (
+CREATE TABLE public.expense (
     id integer NOT NULL,
-    usuario_id integer,
-    nome character varying(100) NOT NULL,
-    valor numeric(12,2) NOT NULL,
-    categoria_id integer,
-    data date NOT NULL
+    investor_id integer,
+    name character varying(100) NOT NULL,
+    value numeric(12,2) NOT NULL,
+    category_id integer,
+    expense_date date NOT NULL,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.gasto OWNER TO postgres;
+ALTER TABLE public.expense OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 16461)
--- Name: gasto_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 228 (class 1259 OID 24653)
+-- Name: expense_category; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.gasto_id_seq
+CREATE TABLE public.expense_category (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    description text,
+    color character varying(20),
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
+);
+
+
+ALTER TABLE public.expense_category OWNER TO postgres;
+
+--
+-- TOC entry 227 (class 1259 OID 24652)
+-- Name: expense_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.expense_category_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -214,38 +214,69 @@ CREATE SEQUENCE public.gasto_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.gasto_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.expense_category_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5156 (class 0 OID 0)
+-- TOC entry 5194 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: expense_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.expense_category_id_seq OWNED BY public.expense_category.id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 24666)
+-- Name: expense_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.expense_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.expense_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5195 (class 0 OID 0)
 -- Dependencies: 229
--- Name: gasto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: expense_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.gasto_id_seq OWNED BY public.gasto.id;
+ALTER SEQUENCE public.expense_id_seq OWNED BY public.expense.id;
 
 
 --
--- TOC entry 224 (class 1259 OID 16413)
--- Name: investidor; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 226 (class 1259 OID 24633)
+-- Name: financial_goal; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.investidor (
+CREATE TABLE public.financial_goal (
     id integer NOT NULL,
-    usuario_id integer NOT NULL,
-    data_nascimento date,
-    perfil_id integer
+    investor_id integer,
+    description text NOT NULL,
+    target_value numeric(12,2) NOT NULL,
+    deadline date,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.investidor OWNER TO postgres;
+ALTER TABLE public.financial_goal OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 16412)
--- Name: investidor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 225 (class 1259 OID 24632)
+-- Name: financial_goal_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.investidor_id_seq
+CREATE SEQUENCE public.financial_goal_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -254,78 +285,43 @@ CREATE SEQUENCE public.investidor_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.investidor_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.financial_goal_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5157 (class 0 OID 0)
--- Dependencies: 223
--- Name: investidor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.investidor_id_seq OWNED BY public.investidor.id;
-
-
---
--- TOC entry 226 (class 1259 OID 16434)
--- Name: metafinanceira; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.metafinanceira (
-    id integer NOT NULL,
-    usuario_id integer,
-    descricao text NOT NULL,
-    valordesejado numeric(12,2) NOT NULL,
-    prazo date
-);
-
-
-ALTER TABLE public.metafinanceira OWNER TO postgres;
-
---
--- TOC entry 225 (class 1259 OID 16433)
--- Name: metafinanceira_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.metafinanceira_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.metafinanceira_id_seq OWNER TO postgres;
-
---
--- TOC entry 5158 (class 0 OID 0)
+-- TOC entry 5196 (class 0 OID 0)
 -- Dependencies: 225
--- Name: metafinanceira_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: financial_goal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.metafinanceira_id_seq OWNED BY public.metafinanceira.id;
+ALTER SEQUENCE public.financial_goal_id_seq OWNED BY public.financial_goal.id;
 
 
 --
--- TOC entry 222 (class 1259 OID 16403)
--- Name: perfil; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 224 (class 1259 OID 24609)
+-- Name: investor; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.perfil (
+CREATE TABLE public.investor (
     id integer NOT NULL,
-    descricao text,
-    objetivos text
+    user_id integer NOT NULL,
+    birth_date date,
+    profile_id integer,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.perfil OWNER TO postgres;
+ALTER TABLE public.investor OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 16402)
--- Name: perfil_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 223 (class 1259 OID 24608)
+-- Name: investor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.perfil_id_seq
+CREATE SEQUENCE public.investor_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -334,37 +330,86 @@ CREATE SEQUENCE public.perfil_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.perfil_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.investor_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5159 (class 0 OID 0)
+-- TOC entry 5197 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: investor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.investor_id_seq OWNED BY public.investor.id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 24596)
+-- Name: profile; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.profile (
+    id integer NOT NULL,
+    description text,
+    goals text,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
+);
+
+
+ALTER TABLE public.profile OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 24595)
+-- Name: profile_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.profile_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.profile_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 5198 (class 0 OID 0)
 -- Dependencies: 221
--- Name: perfil_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: profile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.perfil_id_seq OWNED BY public.perfil.id;
+ALTER SEQUENCE public.profile_id_seq OWNED BY public.profile.id;
 
 
 --
--- TOC entry 236 (class 1259 OID 16507)
--- Name: pergunta; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 236 (class 1259 OID 24721)
+-- Name: question; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.pergunta (
+CREATE TABLE public.question (
     id integer NOT NULL,
-    quizz_id integer,
-    texto text NOT NULL
+    quiz_id integer,
+    text text NOT NULL,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.pergunta OWNER TO postgres;
+ALTER TABLE public.question OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 16506)
--- Name: pergunta_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 235 (class 1259 OID 24720)
+-- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.pergunta_id_seq
+CREATE SEQUENCE public.question_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -373,36 +418,41 @@ CREATE SEQUENCE public.pergunta_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.pergunta_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.question_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5160 (class 0 OID 0)
+-- TOC entry 5199 (class 0 OID 0)
 -- Dependencies: 235
--- Name: pergunta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.pergunta_id_seq OWNED BY public.pergunta.id;
+ALTER SEQUENCE public.question_id_seq OWNED BY public.question.id;
 
 
 --
--- TOC entry 234 (class 1259 OID 16494)
--- Name: quizz; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 234 (class 1259 OID 24705)
+-- Name: quiz; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.quizz (
+CREATE TABLE public.quiz (
     id integer NOT NULL,
-    conteudo_id integer
+    content_id integer,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.quizz OWNER TO postgres;
+ALTER TABLE public.quiz OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 16493)
--- Name: quizz_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 233 (class 1259 OID 24704)
+-- Name: quiz_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.quizz_id_seq
+CREATE SEQUENCE public.quiz_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -411,40 +461,45 @@ CREATE SEQUENCE public.quizz_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.quizz_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.quiz_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5161 (class 0 OID 0)
+-- TOC entry 5200 (class 0 OID 0)
 -- Dependencies: 233
--- Name: quizz_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: quiz_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.quizz_id_seq OWNED BY public.quizz.id;
+ALTER SEQUENCE public.quiz_id_seq OWNED BY public.quiz.id;
 
 
 --
--- TOC entry 244 (class 1259 OID 16568)
--- Name: simulacao; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 244 (class 1259 OID 24793)
+-- Name: simulation; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.simulacao (
+CREATE TABLE public.simulation (
     id integer NOT NULL,
-    usuario_id integer,
-    tipo_id integer,
-    valorbase numeric(12,2),
-    resultado numeric(12,2),
-    data date DEFAULT CURRENT_DATE
+    investor_id integer,
+    type_id integer,
+    base_value numeric(12,2),
+    result numeric(12,2),
+    simulation_date date DEFAULT CURRENT_DATE,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.simulacao OWNER TO postgres;
+ALTER TABLE public.simulation OWNER TO postgres;
 
 --
--- TOC entry 243 (class 1259 OID 16567)
--- Name: simulacao_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 243 (class 1259 OID 24792)
+-- Name: simulation_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.simulacao_id_seq
+CREATE SEQUENCE public.simulation_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -453,37 +508,42 @@ CREATE SEQUENCE public.simulacao_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.simulacao_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.simulation_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5162 (class 0 OID 0)
+-- TOC entry 5201 (class 0 OID 0)
 -- Dependencies: 243
--- Name: simulacao_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: simulation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.simulacao_id_seq OWNED BY public.simulacao.id;
+ALTER SEQUENCE public.simulation_id_seq OWNED BY public.simulation.id;
 
 
 --
--- TOC entry 242 (class 1259 OID 16556)
--- Name: tiposimulacao; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 242 (class 1259 OID 24779)
+-- Name: simulation_type; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.tiposimulacao (
+CREATE TABLE public.simulation_type (
     id integer NOT NULL,
-    nome character varying(100) NOT NULL,
-    descricao text
+    name character varying(100) NOT NULL,
+    description text,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.tiposimulacao OWNER TO postgres;
+ALTER TABLE public.simulation_type OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1259 OID 16555)
--- Name: tiposimulacao_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 241 (class 1259 OID 24778)
+-- Name: simulation_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.tiposimulacao_id_seq
+CREATE SEQUENCE public.simulation_type_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -492,38 +552,43 @@ CREATE SEQUENCE public.tiposimulacao_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.tiposimulacao_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.simulation_type_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5163 (class 0 OID 0)
+-- TOC entry 5202 (class 0 OID 0)
 -- Dependencies: 241
--- Name: tiposimulacao_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: simulation_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.tiposimulacao_id_seq OWNED BY public.tiposimulacao.id;
+ALTER SEQUENCE public.simulation_type_id_seq OWNED BY public.simulation_type.id;
 
 
 --
--- TOC entry 220 (class 1259 OID 16390)
--- Name: usuario; Type: TABLE; Schema: public; Owner: postgres
+-- TOC entry 220 (class 1259 OID 24578)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.usuario (
+CREATE TABLE public.users (
     id integer NOT NULL,
-    nome character varying(100) NOT NULL,
+    name character varying(100) NOT NULL,
     email character varying(100) NOT NULL,
-    senha character varying(255) NOT NULL
+    password character varying(255) NOT NULL,
+    created_by character varying(100),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100),
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status character varying(20) DEFAULT 'active'::character varying
 );
 
 
-ALTER TABLE public.usuario OWNER TO postgres;
+ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 16389)
--- Name: usuario_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- TOC entry 219 (class 1259 OID 24577)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public.usuario_id_seq
+CREATE SEQUENCE public.users_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -532,616 +597,616 @@ CREATE SEQUENCE public.usuario_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.usuario_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 5164 (class 0 OID 0)
+-- TOC entry 5203 (class 0 OID 0)
 -- Dependencies: 219
--- Name: usuario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.usuario_id_seq OWNED BY public.usuario.id;
-
-
---
--- TOC entry 4927 (class 2604 OID 16543)
--- Name: administrador id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.administrador ALTER COLUMN id SET DEFAULT nextval('public.administrador_id_seq'::regclass);
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 4925 (class 2604 OID 16526)
--- Name: alternativa id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4957 (class 2604 OID 24763)
+-- Name: admin id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.alternativa ALTER COLUMN id SET DEFAULT nextval('public.alternativa_id_seq'::regclass);
-
-
---
--- TOC entry 4920 (class 2604 OID 16454)
--- Name: categoriagasto id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.categoriagasto ALTER COLUMN id SET DEFAULT nextval('public.categoriagasto_id_seq'::regclass);
+ALTER TABLE ONLY public.admin ALTER COLUMN id SET DEFAULT nextval('public.admin_id_seq'::regclass);
 
 
 --
--- TOC entry 4922 (class 2604 OID 16486)
--- Name: conteudo id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4952 (class 2604 OID 24743)
+-- Name: answer_option id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.conteudo ALTER COLUMN id SET DEFAULT nextval('public.conteudo_id_seq'::regclass);
-
-
---
--- TOC entry 4921 (class 2604 OID 16465)
--- Name: gasto id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.gasto ALTER COLUMN id SET DEFAULT nextval('public.gasto_id_seq'::regclass);
+ALTER TABLE ONLY public.answer_option ALTER COLUMN id SET DEFAULT nextval('public.answer_option_id_seq'::regclass);
 
 
 --
--- TOC entry 4918 (class 2604 OID 16416)
--- Name: investidor id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4940 (class 2604 OID 24694)
+-- Name: content id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.investidor ALTER COLUMN id SET DEFAULT nextval('public.investidor_id_seq'::regclass);
-
-
---
--- TOC entry 4919 (class 2604 OID 16437)
--- Name: metafinanceira id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.metafinanceira ALTER COLUMN id SET DEFAULT nextval('public.metafinanceira_id_seq'::regclass);
+ALTER TABLE ONLY public.content ALTER COLUMN id SET DEFAULT nextval('public.content_id_seq'::regclass);
 
 
 --
--- TOC entry 4917 (class 2604 OID 16406)
--- Name: perfil id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4936 (class 2604 OID 24670)
+-- Name: expense id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.perfil ALTER COLUMN id SET DEFAULT nextval('public.perfil_id_seq'::regclass);
-
-
---
--- TOC entry 4924 (class 2604 OID 16510)
--- Name: pergunta id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pergunta ALTER COLUMN id SET DEFAULT nextval('public.pergunta_id_seq'::regclass);
+ALTER TABLE ONLY public.expense ALTER COLUMN id SET DEFAULT nextval('public.expense_id_seq'::regclass);
 
 
 --
--- TOC entry 4923 (class 2604 OID 16497)
--- Name: quizz id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4932 (class 2604 OID 24656)
+-- Name: expense_category id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.quizz ALTER COLUMN id SET DEFAULT nextval('public.quizz_id_seq'::regclass);
-
-
---
--- TOC entry 4929 (class 2604 OID 16571)
--- Name: simulacao id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.simulacao ALTER COLUMN id SET DEFAULT nextval('public.simulacao_id_seq'::regclass);
+ALTER TABLE ONLY public.expense_category ALTER COLUMN id SET DEFAULT nextval('public.expense_category_id_seq'::regclass);
 
 
 --
--- TOC entry 4928 (class 2604 OID 16559)
--- Name: tiposimulacao id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4928 (class 2604 OID 24636)
+-- Name: financial_goal id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.tiposimulacao ALTER COLUMN id SET DEFAULT nextval('public.tiposimulacao_id_seq'::regclass);
-
-
---
--- TOC entry 4916 (class 2604 OID 16393)
--- Name: usuario id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.usuario ALTER COLUMN id SET DEFAULT nextval('public.usuario_id_seq'::regclass);
+ALTER TABLE ONLY public.financial_goal ALTER COLUMN id SET DEFAULT nextval('public.financial_goal_id_seq'::regclass);
 
 
 --
--- TOC entry 5142 (class 0 OID 16540)
+-- TOC entry 4924 (class 2604 OID 24612)
+-- Name: investor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.investor ALTER COLUMN id SET DEFAULT nextval('public.investor_id_seq'::regclass);
+
+
+--
+-- TOC entry 4920 (class 2604 OID 24599)
+-- Name: profile id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.profile ALTER COLUMN id SET DEFAULT nextval('public.profile_id_seq'::regclass);
+
+
+--
+-- TOC entry 4948 (class 2604 OID 24724)
+-- Name: question id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.question ALTER COLUMN id SET DEFAULT nextval('public.question_id_seq'::regclass);
+
+
+--
+-- TOC entry 4944 (class 2604 OID 24708)
+-- Name: quiz id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quiz ALTER COLUMN id SET DEFAULT nextval('public.quiz_id_seq'::regclass);
+
+
+--
+-- TOC entry 4965 (class 2604 OID 24796)
+-- Name: simulation id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.simulation ALTER COLUMN id SET DEFAULT nextval('public.simulation_id_seq'::regclass);
+
+
+--
+-- TOC entry 4961 (class 2604 OID 24782)
+-- Name: simulation_type id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.simulation_type ALTER COLUMN id SET DEFAULT nextval('public.simulation_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 4916 (class 2604 OID 24581)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 5181 (class 0 OID 24760)
 -- Dependencies: 240
--- Data for Name: administrador; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: admin; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.administrador (id, usuario_id) FROM stdin;
+COPY public.admin (id, user_id, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5140 (class 0 OID 16523)
+-- TOC entry 5179 (class 0 OID 24740)
 -- Dependencies: 238
--- Data for Name: alternativa; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: answer_option; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.alternativa (id, pergunta_id, texto, correta) FROM stdin;
+COPY public.answer_option (id, question_id, text, is_correct, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5130 (class 0 OID 16451)
--- Dependencies: 228
--- Data for Name: categoriagasto; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.categoriagasto (id, nome, descricao, cor) FROM stdin;
-\.
-
-
---
--- TOC entry 5134 (class 0 OID 16483)
+-- TOC entry 5173 (class 0 OID 24691)
 -- Dependencies: 232
--- Data for Name: conteudo; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: content; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.conteudo (id, titulo, descricao, modulo) FROM stdin;
+COPY public.content (id, title, description, module, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5132 (class 0 OID 16462)
+-- TOC entry 5171 (class 0 OID 24667)
 -- Dependencies: 230
--- Data for Name: gasto; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: expense; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.gasto (id, usuario_id, nome, valor, categoria_id, data) FROM stdin;
+COPY public.expense (id, investor_id, name, value, category_id, expense_date, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5126 (class 0 OID 16413)
--- Dependencies: 224
--- Data for Name: investidor; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 5169 (class 0 OID 24653)
+-- Dependencies: 228
+-- Data for Name: expense_category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.investidor (id, usuario_id, data_nascimento, perfil_id) FROM stdin;
+COPY public.expense_category (id, name, description, color, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5128 (class 0 OID 16434)
+-- TOC entry 5167 (class 0 OID 24633)
 -- Dependencies: 226
--- Data for Name: metafinanceira; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: financial_goal; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.metafinanceira (id, usuario_id, descricao, valordesejado, prazo) FROM stdin;
+COPY public.financial_goal (id, investor_id, description, target_value, deadline, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5124 (class 0 OID 16403)
+-- TOC entry 5165 (class 0 OID 24609)
+-- Dependencies: 224
+-- Data for Name: investor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.investor (id, user_id, birth_date, profile_id, created_by, created_at, updated_by, updated_at, status) FROM stdin;
+\.
+
+
+--
+-- TOC entry 5163 (class 0 OID 24596)
 -- Dependencies: 222
--- Data for Name: perfil; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: profile; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.perfil (id, descricao, objetivos) FROM stdin;
+COPY public.profile (id, description, goals, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5138 (class 0 OID 16507)
+-- TOC entry 5177 (class 0 OID 24721)
 -- Dependencies: 236
--- Data for Name: pergunta; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.pergunta (id, quizz_id, texto) FROM stdin;
+COPY public.question (id, quiz_id, text, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5136 (class 0 OID 16494)
+-- TOC entry 5175 (class 0 OID 24705)
 -- Dependencies: 234
--- Data for Name: quizz; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: quiz; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.quizz (id, conteudo_id) FROM stdin;
+COPY public.quiz (id, content_id, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5146 (class 0 OID 16568)
+-- TOC entry 5185 (class 0 OID 24793)
 -- Dependencies: 244
--- Data for Name: simulacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: simulation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.simulacao (id, usuario_id, tipo_id, valorbase, resultado, data) FROM stdin;
+COPY public.simulation (id, investor_id, type_id, base_value, result, simulation_date, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5144 (class 0 OID 16556)
+-- TOC entry 5183 (class 0 OID 24779)
 -- Dependencies: 242
--- Data for Name: tiposimulacao; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: simulation_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tiposimulacao (id, nome, descricao) FROM stdin;
+COPY public.simulation_type (id, name, description, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5122 (class 0 OID 16390)
+-- TOC entry 5161 (class 0 OID 24578)
 -- Dependencies: 220
--- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.usuario (id, nome, email, senha) FROM stdin;
+COPY public.users (id, name, email, password, created_by, created_at, updated_by, updated_at, status) FROM stdin;
 \.
 
 
 --
--- TOC entry 5165 (class 0 OID 0)
+-- TOC entry 5204 (class 0 OID 0)
 -- Dependencies: 239
--- Name: administrador_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.administrador_id_seq', 1, false);
+SELECT pg_catalog.setval('public.admin_id_seq', 1, false);
 
 
 --
--- TOC entry 5166 (class 0 OID 0)
+-- TOC entry 5205 (class 0 OID 0)
 -- Dependencies: 237
--- Name: alternativa_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: answer_option_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.alternativa_id_seq', 1, false);
-
-
---
--- TOC entry 5167 (class 0 OID 0)
--- Dependencies: 227
--- Name: categoriagasto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.categoriagasto_id_seq', 1, false);
+SELECT pg_catalog.setval('public.answer_option_id_seq', 1, false);
 
 
 --
--- TOC entry 5168 (class 0 OID 0)
+-- TOC entry 5206 (class 0 OID 0)
 -- Dependencies: 231
--- Name: conteudo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: content_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.conteudo_id_seq', 1, false);
+SELECT pg_catalog.setval('public.content_id_seq', 1, false);
 
 
 --
--- TOC entry 5169 (class 0 OID 0)
+-- TOC entry 5207 (class 0 OID 0)
+-- Dependencies: 227
+-- Name: expense_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.expense_category_id_seq', 1, false);
+
+
+--
+-- TOC entry 5208 (class 0 OID 0)
 -- Dependencies: 229
--- Name: gasto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: expense_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.gasto_id_seq', 1, false);
-
-
---
--- TOC entry 5170 (class 0 OID 0)
--- Dependencies: 223
--- Name: investidor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.investidor_id_seq', 1, false);
+SELECT pg_catalog.setval('public.expense_id_seq', 1, false);
 
 
 --
--- TOC entry 5171 (class 0 OID 0)
+-- TOC entry 5209 (class 0 OID 0)
 -- Dependencies: 225
--- Name: metafinanceira_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: financial_goal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.metafinanceira_id_seq', 1, false);
+SELECT pg_catalog.setval('public.financial_goal_id_seq', 1, false);
 
 
 --
--- TOC entry 5172 (class 0 OID 0)
+-- TOC entry 5210 (class 0 OID 0)
+-- Dependencies: 223
+-- Name: investor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.investor_id_seq', 1, false);
+
+
+--
+-- TOC entry 5211 (class 0 OID 0)
 -- Dependencies: 221
--- Name: perfil_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.perfil_id_seq', 1, false);
+SELECT pg_catalog.setval('public.profile_id_seq', 1, false);
 
 
 --
--- TOC entry 5173 (class 0 OID 0)
+-- TOC entry 5212 (class 0 OID 0)
 -- Dependencies: 235
--- Name: pergunta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pergunta_id_seq', 1, false);
+SELECT pg_catalog.setval('public.question_id_seq', 1, false);
 
 
 --
--- TOC entry 5174 (class 0 OID 0)
+-- TOC entry 5213 (class 0 OID 0)
 -- Dependencies: 233
--- Name: quizz_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: quiz_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.quizz_id_seq', 1, false);
+SELECT pg_catalog.setval('public.quiz_id_seq', 1, false);
 
 
 --
--- TOC entry 5175 (class 0 OID 0)
+-- TOC entry 5214 (class 0 OID 0)
 -- Dependencies: 243
--- Name: simulacao_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: simulation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.simulacao_id_seq', 1, false);
+SELECT pg_catalog.setval('public.simulation_id_seq', 1, false);
 
 
 --
--- TOC entry 5176 (class 0 OID 0)
+-- TOC entry 5215 (class 0 OID 0)
 -- Dependencies: 241
--- Name: tiposimulacao_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: simulation_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.tiposimulacao_id_seq', 1, false);
+SELECT pg_catalog.setval('public.simulation_type_id_seq', 1, false);
 
 
 --
--- TOC entry 5177 (class 0 OID 0)
+-- TOC entry 5216 (class 0 OID 0)
 -- Dependencies: 219
--- Name: usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_id_seq', 1, false);
-
-
---
--- TOC entry 4956 (class 2606 OID 16547)
--- Name: administrador administrador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.administrador
-    ADD CONSTRAINT administrador_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 
 --
--- TOC entry 4958 (class 2606 OID 16549)
--- Name: administrador administrador_usuario_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4995 (class 2606 OID 24770)
+-- Name: admin admin_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.administrador
-    ADD CONSTRAINT administrador_usuario_id_key UNIQUE (usuario_id);
-
-
---
--- TOC entry 4954 (class 2606 OID 16533)
--- Name: alternativa alternativa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.alternativa
-    ADD CONSTRAINT alternativa_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.admin
+    ADD CONSTRAINT admin_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4944 (class 2606 OID 16460)
--- Name: categoriagasto categoriagasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4997 (class 2606 OID 24772)
+-- Name: admin admin_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.categoriagasto
-    ADD CONSTRAINT categoriagasto_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4948 (class 2606 OID 16492)
--- Name: conteudo conteudo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.conteudo
-    ADD CONSTRAINT conteudo_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.admin
+    ADD CONSTRAINT admin_user_id_key UNIQUE (user_id);
 
 
 --
--- TOC entry 4946 (class 2606 OID 16471)
--- Name: gasto gasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4993 (class 2606 OID 24753)
+-- Name: answer_option answer_option_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.gasto
-    ADD CONSTRAINT gasto_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4938 (class 2606 OID 16420)
--- Name: investidor investidor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.investidor
-    ADD CONSTRAINT investidor_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.answer_option
+    ADD CONSTRAINT answer_option_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4940 (class 2606 OID 16422)
--- Name: investidor investidor_usuario_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4987 (class 2606 OID 24703)
+-- Name: content content_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.investidor
-    ADD CONSTRAINT investidor_usuario_id_key UNIQUE (usuario_id);
-
-
---
--- TOC entry 4942 (class 2606 OID 16444)
--- Name: metafinanceira metafinanceira_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.metafinanceira
-    ADD CONSTRAINT metafinanceira_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.content
+    ADD CONSTRAINT content_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4936 (class 2606 OID 16411)
--- Name: perfil perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4983 (class 2606 OID 24665)
+-- Name: expense_category expense_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.perfil
-    ADD CONSTRAINT perfil_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4952 (class 2606 OID 16516)
--- Name: pergunta pergunta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pergunta
-    ADD CONSTRAINT pergunta_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.expense_category
+    ADD CONSTRAINT expense_category_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4950 (class 2606 OID 16500)
--- Name: quizz quizz_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4985 (class 2606 OID 24679)
+-- Name: expense expense_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.quizz
-    ADD CONSTRAINT quizz_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4962 (class 2606 OID 16575)
--- Name: simulacao simulacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.simulacao
-    ADD CONSTRAINT simulacao_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.expense
+    ADD CONSTRAINT expense_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4960 (class 2606 OID 16565)
--- Name: tiposimulacao tiposimulacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4981 (class 2606 OID 24646)
+-- Name: financial_goal financial_goal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.tiposimulacao
-    ADD CONSTRAINT tiposimulacao_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4932 (class 2606 OID 16401)
--- Name: usuario usuario_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.usuario
-    ADD CONSTRAINT usuario_email_key UNIQUE (email);
+ALTER TABLE ONLY public.financial_goal
+    ADD CONSTRAINT financial_goal_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4934 (class 2606 OID 16399)
--- Name: usuario usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4977 (class 2606 OID 24619)
+-- Name: investor investor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.usuario
-    ADD CONSTRAINT usuario_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 4971 (class 2606 OID 16550)
--- Name: administrador administrador_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.administrador
-    ADD CONSTRAINT administrador_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuario(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.investor
+    ADD CONSTRAINT investor_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4970 (class 2606 OID 16534)
--- Name: alternativa alternativa_pergunta_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4979 (class 2606 OID 24621)
+-- Name: investor investor_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.alternativa
-    ADD CONSTRAINT alternativa_pergunta_id_fkey FOREIGN KEY (pergunta_id) REFERENCES public.pergunta(id) ON DELETE CASCADE;
-
-
---
--- TOC entry 4966 (class 2606 OID 16477)
--- Name: gasto gasto_categoria_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.gasto
-    ADD CONSTRAINT gasto_categoria_id_fkey FOREIGN KEY (categoria_id) REFERENCES public.categoriagasto(id);
+ALTER TABLE ONLY public.investor
+    ADD CONSTRAINT investor_user_id_key UNIQUE (user_id);
 
 
 --
--- TOC entry 4967 (class 2606 OID 16472)
--- Name: gasto gasto_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4975 (class 2606 OID 24607)
+-- Name: profile profile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.gasto
-    ADD CONSTRAINT gasto_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.investidor(id) ON DELETE CASCADE;
-
-
---
--- TOC entry 4963 (class 2606 OID 16428)
--- Name: investidor investidor_perfil_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.investidor
-    ADD CONSTRAINT investidor_perfil_id_fkey FOREIGN KEY (perfil_id) REFERENCES public.perfil(id);
+ALTER TABLE ONLY public.profile
+    ADD CONSTRAINT profile_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4964 (class 2606 OID 16423)
--- Name: investidor investidor_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4991 (class 2606 OID 24733)
+-- Name: question question_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.investidor
-    ADD CONSTRAINT investidor_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.usuario(id) ON DELETE CASCADE;
-
-
---
--- TOC entry 4965 (class 2606 OID 16445)
--- Name: metafinanceira metafinanceira_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.metafinanceira
-    ADD CONSTRAINT metafinanceira_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.investidor(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.question
+    ADD CONSTRAINT question_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4969 (class 2606 OID 16517)
--- Name: pergunta pergunta_quizz_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4989 (class 2606 OID 24714)
+-- Name: quiz quiz_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.pergunta
-    ADD CONSTRAINT pergunta_quizz_id_fkey FOREIGN KEY (quizz_id) REFERENCES public.quizz(id) ON DELETE CASCADE;
-
-
---
--- TOC entry 4968 (class 2606 OID 16501)
--- Name: quizz quizz_conteudo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.quizz
-    ADD CONSTRAINT quizz_conteudo_id_fkey FOREIGN KEY (conteudo_id) REFERENCES public.conteudo(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.quiz
+    ADD CONSTRAINT quiz_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4972 (class 2606 OID 16581)
--- Name: simulacao simulacao_tipo_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 5001 (class 2606 OID 24803)
+-- Name: simulation simulation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.simulacao
-    ADD CONSTRAINT simulacao_tipo_id_fkey FOREIGN KEY (tipo_id) REFERENCES public.tiposimulacao(id);
+ALTER TABLE ONLY public.simulation
+    ADD CONSTRAINT simulation_pkey PRIMARY KEY (id);
 
 
 --
--- TOC entry 4973 (class 2606 OID 16576)
--- Name: simulacao simulacao_usuario_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4999 (class 2606 OID 24791)
+-- Name: simulation_type simulation_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.simulacao
-    ADD CONSTRAINT simulacao_usuario_id_fkey FOREIGN KEY (usuario_id) REFERENCES public.investidor(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.simulation_type
+    ADD CONSTRAINT simulation_type_pkey PRIMARY KEY (id);
 
 
--- Completed on 2025-10-08 10:13:47
+--
+-- TOC entry 4971 (class 2606 OID 24594)
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- TOC entry 4973 (class 2606 OID 24592)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 5010 (class 2606 OID 24773)
+-- Name: admin admin_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admin
+    ADD CONSTRAINT admin_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5009 (class 2606 OID 24754)
+-- Name: answer_option answer_option_question_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.answer_option
+    ADD CONSTRAINT answer_option_question_id_fkey FOREIGN KEY (question_id) REFERENCES public.question(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5005 (class 2606 OID 24685)
+-- Name: expense expense_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.expense
+    ADD CONSTRAINT expense_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.expense_category(id);
+
+
+--
+-- TOC entry 5006 (class 2606 OID 24680)
+-- Name: expense expense_investor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.expense
+    ADD CONSTRAINT expense_investor_id_fkey FOREIGN KEY (investor_id) REFERENCES public.investor(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5004 (class 2606 OID 24647)
+-- Name: financial_goal financial_goal_investor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.financial_goal
+    ADD CONSTRAINT financial_goal_investor_id_fkey FOREIGN KEY (investor_id) REFERENCES public.investor(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5002 (class 2606 OID 24627)
+-- Name: investor investor_profile_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.investor
+    ADD CONSTRAINT investor_profile_id_fkey FOREIGN KEY (profile_id) REFERENCES public.profile(id);
+
+
+--
+-- TOC entry 5003 (class 2606 OID 24622)
+-- Name: investor investor_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.investor
+    ADD CONSTRAINT investor_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5008 (class 2606 OID 24734)
+-- Name: question question_quiz_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.question
+    ADD CONSTRAINT question_quiz_id_fkey FOREIGN KEY (quiz_id) REFERENCES public.quiz(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5007 (class 2606 OID 24715)
+-- Name: quiz quiz_content_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.quiz
+    ADD CONSTRAINT quiz_content_id_fkey FOREIGN KEY (content_id) REFERENCES public.content(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5011 (class 2606 OID 24804)
+-- Name: simulation simulation_investor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.simulation
+    ADD CONSTRAINT simulation_investor_id_fkey FOREIGN KEY (investor_id) REFERENCES public.investor(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 5012 (class 2606 OID 24809)
+-- Name: simulation simulation_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.simulation
+    ADD CONSTRAINT simulation_type_id_fkey FOREIGN KEY (type_id) REFERENCES public.simulation_type(id);
+
+
+-- Completed on 2025-10-15 11:32:29
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict KWRshbyQlSlBLtOCdR6NTBVVGtc8IL5DpXBSSJ25HsxTCMSgh8hVmkr52LOULIf
+\unrestrict jSw8YdscZtzpFMwj1itMN6jamz5LWLmHAfAfyyG7cXARdPocLeecB6ybSq4hO70
 
