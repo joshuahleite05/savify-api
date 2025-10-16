@@ -15,6 +15,7 @@ app.use(express.json());
 
 // rotas
 app.use('/api/auth', authRoutes);
+app.use('/api/expense', expenseRoutes);
 
 // health
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
