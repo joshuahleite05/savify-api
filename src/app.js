@@ -1,7 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
+import expenseRoutes from './routes/expenseRoutes.js';
+import expenseCategoryRoutes from './routes/expenseCategoryRoutes.js';
+import financialGoalRoutes from './routes/financialGoalRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+
 
 const app = express();
 
