@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes.js';
 import expenseRoutes from './routes/expenseRoutes.js';
 import expenseCategoryRoutes from './routes/expenseCategoryRoutes.js';
 import financialGoalRoutes from './routes/financialGoalRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/expense', expenseRoutes);
 app.use('/api/expense-category', expenseCategoryRoutes);
 app.use('/api/financial-goal', financialGoalRoutes);
+app.use('/api/profile', profileRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 

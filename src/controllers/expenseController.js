@@ -11,7 +11,18 @@ export const createExpense = async (req, res, next) => {
 
 export const getAllExpenses = async (req, res, next) => {
   try {
-    const expenses = await Expense.findAll();
+    const expenses = await Expense.findAll({
+      where: { investor_id: req.params.userId },
+      include: [
+        {
+          model: ExpenseCategory,
+          as: "category",
+          attributes: ["id", "name"],
+        },
+      ],
+      order: [["expense_date", "DESC"]],
+    });
+
     res.json(expenses);
   } catch (error) {
     next(error);
